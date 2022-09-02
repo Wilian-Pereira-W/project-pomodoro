@@ -8,6 +8,7 @@ function App(): JSX.Element {
 
   return (
     <div className="container">
+      <h1>Pomodoro Timer</h1>
       <form className="pomodoroOption">
         <label htmlFor="pomodoro">
           Pomodoro

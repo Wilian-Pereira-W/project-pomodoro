@@ -17,6 +17,18 @@ body {
   margin: 0 auto;
 }
 
+.container h1 {
+  margin: 0 auto;
+  color: #000;
+  width: 300px;
+  text-align: center;
+  margin-top: 20px;
+  background: #FFF;
+  border-radius: 20px;
+  font-family:'Times New Roman', Times, serif;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .6);
+}
+
 .working {
   background: #EF5D50;
 }
