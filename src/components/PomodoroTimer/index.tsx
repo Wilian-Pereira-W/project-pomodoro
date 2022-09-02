@@ -17,6 +17,7 @@ interface Props {
   shortRestTime: number;
   longRestTime: number;
   cycles: number;
+  disabled: boolean;
 }
 function PomodoroTimer(props: Props): JSX.Element {
   const [mainTime, setMainTime] = useState<number>(props.pomodoroTime);
@@ -89,17 +90,20 @@ function PomodoroTimer(props: Props): JSX.Element {
     resting,
     working,
   ]);
-
   return (
     <div className="pomodoro">
-      <h2>Você está: {working ? 'Trabalhando' : 'Descansando'}</h2>
+      <h2>Você está {working ? 'trabalhando.' : 'descansando.'}</h2>
       <Timer mainTimer={mainTime} />
       <div className="controls">
-        <Button text="Work" onClick={() => configureWork()}></Button>
-        <Button text="Resting" onClick={() => configureRest(false)}></Button>
+        <Button
+          text="START"
+          onClick={() => configureWork()}
+          disabled={props.disabled}
+        ></Button>
+        <Button text="RESTING" onClick={() => configureRest(false)}></Button>
         <Button
           className={!working && !resting ? 'hidden' : ''}
-          text={timeCounting ? 'Pause' : 'Play'}
+          text={timeCounting ? 'PAUSE' : 'PLAY'}
           onClick={() => setTimeCounting(!timeCounting)}
         ></Button>
       </div>
