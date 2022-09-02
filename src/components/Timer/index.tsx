@@ -1,4 +1,4 @@
-import { secondsToTime } from '../utils/secondsToTime';
+import { secondsToTime } from '../../utils/secondsToTime';
 
 interface Props {
   mainTimer: number;
