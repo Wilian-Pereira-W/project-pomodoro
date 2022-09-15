@@ -3,6 +3,8 @@ import { useInterval } from '../../hooks/useInterval';
 import { workedHours } from '../../utils/ workedHours';
 import Button from '../Button';
 import Timer from '../Timer';
+import Helmet from 'react-helmet';
+import { secondsToTime } from '../../utils/secondsToTime';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bellStart = require('../../sounds/bell-start.mp3');
@@ -31,6 +33,7 @@ function PomodoroTimer(props: Props): JSX.Element {
   const [completedCycles, setCompletedCycles] = useState(0);
   const [fullWorkingTime, setFullWorkingTime] = useState(0);
   const [numberOfPomodoros, setNumberOfPomodoros] = useState(0);
+  const [isTitle, setIsTitle] = useState(false);
 
   useInterval(
     () => {
@@ -41,6 +44,7 @@ function PomodoroTimer(props: Props): JSX.Element {
   );
 
   const configureWork = useCallback(() => {
+    setIsTitle(true);
     setTimeCounting(true);
     setWorking(true);
     setResting(false);
@@ -91,28 +95,36 @@ function PomodoroTimer(props: Props): JSX.Element {
     working,
   ]);
   return (
-    <div className="pomodoro">
-      <h2>Você está {working ? 'trabalhando.' : 'descansando.'}</h2>
-      <Timer mainTimer={mainTime} />
-      <div className="controls">
-        <Button
-          text="START"
-          onClick={() => configureWork()}
-          disabled={props.disabled}
-        ></Button>
-        <Button text="RESTING" onClick={() => configureRest(false)}></Button>
-        <Button
-          className={!working && !resting ? 'hidden' : ''}
-          text={timeCounting ? 'PAUSE' : 'PLAY'}
-          onClick={() => setTimeCounting(!timeCounting)}
-        ></Button>
+    <>
+      {isTitle ? (
+        <Helmet title={secondsToTime(mainTime)} />
+      ) : (
+        <Helmet title="Pomodoro Timer" />
+      )}
+
+      <div className="pomodoro">
+        <h2>Você está {working ? 'trabalhando.' : 'descansando.'}</h2>
+        <Timer mainTimer={mainTime} />
+        <div className="controls">
+          <Button
+            text="START"
+            onClick={() => configureWork()}
+            disabled={props.disabled}
+          ></Button>
+          <Button text="RESTING" onClick={() => configureRest(false)}></Button>
+          <Button
+            className={!working && !resting ? 'hidden' : ''}
+            text={timeCounting ? 'PAUSE' : 'PLAY'}
+            onClick={() => setTimeCounting(!timeCounting)}
+          ></Button>
+        </div>
+        <div className="details">
+          <p>Ciclos concluídos: {completedCycles}</p>
+          <p>Horas trabalhadas: {workedHours(fullWorkingTime)}</p>
+          <p>Pomodoros concluídos: {numberOfPomodoros}</p>
+        </div>
       </div>
-      <div className="details">
-        <p>Ciclos concluídos: {completedCycles}</p>
-        <p>Horas trabalhadas: {workedHours(fullWorkingTime)}</p>
-        <p>Pomodoros concluídos: {numberOfPomodoros}</p>
-      </div>
-    </div>
+    </>
   );
 }
 
